@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -28,7 +29,7 @@ func handleHealthz(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, "ok")
 }
 
-func startHTTP(ctx context.Context, wg *sync.WaitGroup, log *zap.Logger) {
+func startHTTP(ctx context.Context, wg *sync.WaitGroup, config *config.ExporterConfig) {
 	wg.Add(1)
 	defer wg.Done()
 
@@ -36,37 +37,41 @@ func startHTTP(ctx context.Context, wg *sync.WaitGroup, log *zap.Logger) {
 	echoPrometheus := echoPrometheus.NewPrometheus("statuspage_exporter", nil)
 	echoPrometheus.Use(srv)
 
-	srv.GET("/probe", prober.Handler(log))
+	srv.GET("/probe", prober.Handler(config))
 	srv.GET("/healthz", handleHealthz)
 
-	httpPort := config.HTTPPort()
+	httpPort := config.HTTPPort
 	httpAddr := fmt.Sprintf(":%d", httpPort)
 
 	// Start your http server for prometheus.
 	go func() {
 		if err := srv.Start(httpAddr); err != nil {
-			log.Panic("Unable to start a http server.", zap.Error(err))
+			config.Log.Panic("Unable to start a http server.", zap.Error(err))
 		}
 	}()
 
-	log.Info("Http server listening on", zap.Int("port", httpPort))
+	config.Log.Info("Http server listening on", zap.Int("port", httpPort))
 
 	<-ctx.Done()
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 	defer cancel()
 
-	if err := srv.Shutdown(shutdownCtx); err != nil { //nolint:contextcheck
-		log.Panic("Http server Shutdown Failed", zap.Error(err))
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		config.Log.Panic("Http server Shutdown Failed", zap.Error(err))
 	}
 
-	log.Info("Http server stopped")
+	config.Log.Info("Http server stopped")
 }
 
 func main() {
-	log, err := config.InitConfig()
+	var configFile string
+	flag.StringVar(&configFile, "config", "", "Path to config file")
+	flag.Parse()
+
+	cfg, err := config.InitConfig(configFile)
 	if err != nil {
-		log.Fatal("Unable to initialize config", zap.Error(err))
+		cfg.Log.Fatal("Unable to initialize config", zap.Error(err))
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -74,13 +79,13 @@ func main() {
 
 	prometheus.MustRegister(version.NewCollector("statuspage_exporter"))
 
-	go startHTTP(ctx, wg, log)
+	go startHTTP(ctx, wg, cfg)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 	<-quit
-	log.Info("Received shutdown signal. Waiting for workers to terminate...")
+	cfg.Log.Info("Received shutdown signal. Waiting for workers to terminate...")
 	cancel()
 
 	wg.Wait()

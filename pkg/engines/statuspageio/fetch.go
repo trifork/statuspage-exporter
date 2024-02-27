@@ -62,7 +62,7 @@ func FetchStatusPage(
 	}
 
 	resp, err := client.R().
-		SetResult(&AtlassianStatusPageResponse{}). //nolint:exhaustruct
+		SetResult(&AtlassianStatusPageResponse{}).
 		Get(parsedURL)
 	if err != nil {
 		log.Error(

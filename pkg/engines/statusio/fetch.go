@@ -51,7 +51,7 @@ func constructURL(log *zap.Logger, targetURL string) (string, error) {
 }
 
 // FetchStatusPage fetches status page and updates service status gauge.
-func FetchStatusPage( //nolint:funlen
+func FetchStatusPage(
 	log *zap.Logger,
 	targetURL string,
 	client *resty.Client,
@@ -78,8 +78,8 @@ func FetchStatusPage( //nolint:funlen
 	}
 
 	defer func(body io.ReadCloser) {
-		err := body.Close()
-		if err != nil {
+		closeErr := body.Close()
+		if closeErr != nil {
 			log.Error("Error closing response body", zap.Error(err))
 
 			return

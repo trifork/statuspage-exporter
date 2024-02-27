@@ -4,17 +4,17 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/sergeyshevch/statuspage-exporter/pkg/config"
+
 	"github.com/labstack/echo/v4"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"go.uber.org/zap"
-
 	"github.com/sergeyshevch/statuspage-exporter/pkg/engines"
 )
 
 func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.GaugeVec) {
 	componentStatus := prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{ //nolint:exhaustruct
+		prometheus.GaugeOpts{
 			Name: "statuspage_component",
 			Help: "Status of a service component. " +
 				"0 - Unknown, 1 - Operational, 2 - Planned Maintenance, " +
@@ -23,7 +23,7 @@ func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.Ga
 		[]string{"service", "status_page_url", "component"},
 	)
 	overallStatus := prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{ //nolint:exhaustruct
+		prometheus.GaugeOpts{
 			Name: "statuspage_overall",
 			Help: "Overall status of a service" +
 				"0 - Unknown, 1 - Operational, 2 - Planned Maintenance, " +
@@ -32,7 +32,7 @@ func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.Ga
 		[]string{"service", "status_page_url"},
 	)
 	serviceStatusDurationGauge := prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{ //nolint:exhaustruct
+		prometheus.GaugeOpts{
 			Name: "service_status_fetch_duration_seconds",
 			Help: "Returns how long the service status fetch took to complete in seconds",
 		},
@@ -43,7 +43,7 @@ func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.Ga
 }
 
 // Handler returns a http handler for /probe endpoint.
-func Handler(log *zap.Logger) echo.HandlerFunc {
+func Handler(config *config.ExporterConfig) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		targetURL := ctx.QueryParam("target")
 		if targetURL == "" {
@@ -57,7 +57,7 @@ func Handler(log *zap.Logger) echo.HandlerFunc {
 		registry.MustRegister(overallStatus)
 		registry.MustRegister(serviceStatusDurationGauge)
 
-		err := engines.FetchStatus(log, targetURL, componentStatus, overallStatus)
+		err := engines.FetchStatus(config, targetURL, componentStatus, overallStatus)
 		if err != nil {
 			return ctx.String(http.StatusInternalServerError, err.Error())
 		}
@@ -67,7 +67,7 @@ func Handler(log *zap.Logger) echo.HandlerFunc {
 		serviceStatusDurationGauge.WithLabelValues(targetURL).Set(duration)
 
 		h := echo.WrapHandler(
-			promhttp.HandlerFor(registry, promhttp.HandlerOpts{}), //nolint:exhaustruct
+			promhttp.HandlerFor(registry, promhttp.HandlerOpts{}),
 		)
 
 		return h(ctx)
