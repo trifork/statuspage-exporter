@@ -3,7 +3,7 @@ module github.com/fernandonogueira/statuspage-exporter
 go 1.22
 
 require (
-	github.com/PuerkitoBio/goquery v1.9.0
+	github.com/PuerkitoBio/goquery v1.9.1
 	github.com/go-resty/resty/v2 v2.11.0
 	github.com/labstack/echo-contrib v0.15.0
 	github.com/labstack/echo/v4 v4.11.4
