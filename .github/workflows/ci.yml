@@ -36,6 +36,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: go-semantic-release/action@v1
         with:
+          custom-arguments: --provider-opt github_use_compare_commits=true
           hooks: goreleaser
           prerelease: true
         env:
