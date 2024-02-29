@@ -10,7 +10,7 @@ require (
 	github.com/prometheus/client_golang v1.18.0
 	github.com/prometheus/common v0.45.0
 	github.com/spf13/viper v1.18.2
-	go.uber.org/zap v1.24.0
+	go.uber.org/zap v1.27.0
 )
 
 require (
