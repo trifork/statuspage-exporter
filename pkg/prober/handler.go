@@ -4,12 +4,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/config"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/config"
 
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines"
 	"github.com/labstack/echo/v4"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines"
 )
 
 func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.GaugeVec) {

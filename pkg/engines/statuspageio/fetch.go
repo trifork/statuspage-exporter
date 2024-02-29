@@ -7,7 +7,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/utils"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/utils"
 )
 
 // IsStatusPageIOPage checks if given URL is StatusPage.io page.

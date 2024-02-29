@@ -1,5 +1,3 @@
-# This is an example .goreleaser.yml file with some sensible defaults.
-# Make sure to check the documentation at https://goreleaser.com
 before:
   hooks:
     # You may remove this if you don't use go modules.
@@ -25,10 +23,8 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-amd64"
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-amd64"
-      - "sergeykons/{{ .ProjectName }}:{{ .Version }}-amd64"
-      - "sergeykons/{{ .ProjectName }}:latest-amd64"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-amd64"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-amd64"
     build_flag_templates:
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{.Date}}"
@@ -39,10 +35,8 @@ dockers:
     goos: linux
     goarch: arm64
     image_templates:
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-arm64v8"
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-arm64v8"
-      - "sergeykons/{{ .ProjectName }}:{{ .Version }}-arm64v8"
-      - "sergeykons/{{ .ProjectName }}:latest-arm64v8"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-arm64v8"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-arm64v8"
     build_flag_templates:
       - "--platform=linux/arm64/v8"
       - "--label=org.opencontainers.image.created={{.Date}}"
@@ -54,10 +48,8 @@ dockers:
     goarch: arm
     goarm: 7
     image_templates:
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-armv7"
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-armv7"
-      - "sergeykons/{{ .ProjectName }}:{{ .Version }}-armv7"
-      - "sergeykons/{{ .ProjectName }}:latest-armv7"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-armv7"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-armv7"
     build_flag_templates:
       - "--platform=linux/arm/v7"
       - "--label=org.opencontainers.image.created={{.Date}}"
@@ -67,26 +59,16 @@ dockers:
 
 docker_manifests:
   # https://goreleaser.com/customization/docker_manifest/
-  - name_template: ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}
+  - name_template: ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}
     image_templates:
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-arm64v8
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-armv7
-  - name_template: ghcr.io/sergeyshevch/{{ .ProjectName }}:latest
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-arm64v8
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-armv7
+  - name_template: ghcr.io/fernandonogueira/{{ .ProjectName }}:latest
     image_templates:
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-amd64
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-arm64v8
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-armv7
-  - name_template: sergeykons/{{ .ProjectName }}:{{ .Version }}
-    image_templates:
-      - sergeykons/{{ .ProjectName }}:{{ .Version }}-amd64
-      - sergeykons/{{ .ProjectName }}:{{ .Version }}-arm64v8
-      - sergeykons/{{ .ProjectName }}:{{ .Version }}-armv7
-  - name_template: sergeykons/{{ .ProjectName }}:latest
-    image_templates:
-      - sergeykons/{{ .ProjectName }}:latest-amd64
-      - sergeykons/{{ .ProjectName }}:latest-arm64v8
-      - sergeykons/{{ .ProjectName }}:latest-armv7
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-amd64
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-arm64v8
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-armv7
 
 archives:
   # https://goreleaser.com/customization/archive/

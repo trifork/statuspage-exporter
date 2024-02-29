@@ -11,7 +11,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/utils"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/utils"
 )
 
 // IsStatusIOPage checks if given URL is Status.io page.

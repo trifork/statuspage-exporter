@@ -3,12 +3,12 @@ package engines
 import (
 	"errors"
 
+	"github.com/fernandonogueira/statuspage-exporter/pkg/config"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines/statusio"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines/statuspageio"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines/types"
 	"github.com/go-resty/resty/v2"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/config"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines/statusio"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines/statuspageio"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines/types"
 )
 
 var errUnknownStatusPageType = errors.New("unknown statuspage type")

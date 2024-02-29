@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/lint.yml
 
   release:
-    if: github.repository == 'sergeyshevch/statuspage-exporter'
+    if: github.repository == 'fernandonogueira/statuspage-exporter'
     name: Release
     environment: release
     runs-on: ubuntu-latest

@@ -1,6 +1,6 @@
 package statusio
 
-import "github.com/sergeyshevch/statuspage-exporter/pkg/engines/types"
+import "github.com/fernandonogueira/statuspage-exporter/pkg/engines/types"
 
 // StatusToMetricValue converts statuspage status to metric value.
 func StatusToMetricValue(status string) types.Status {

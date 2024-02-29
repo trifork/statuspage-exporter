@@ -17,8 +17,8 @@ import (
 	"github.com/prometheus/common/version"
 	"go.uber.org/zap"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/config"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/prober"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/config"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/prober"
 )
 
 const (

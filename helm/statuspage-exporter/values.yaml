@@ -8,7 +8,7 @@ retryCount: 3
 clientTimeout: 2
 
 image:
-  repository: ghcr.io/sergeyshevch/statuspage-exporter
+  repository: ghcr.io/fernandonogueira/statuspage-exporter
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

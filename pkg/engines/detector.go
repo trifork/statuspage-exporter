@@ -4,9 +4,9 @@ import (
 	"github.com/go-resty/resty/v2"
 	"go.uber.org/zap"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines/statusio"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines/statuspageio"
-	"github.com/sergeyshevch/statuspage-exporter/pkg/engines/types"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines/statusio"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines/statuspageio"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/engines/types"
 )
 
 type Detector struct {

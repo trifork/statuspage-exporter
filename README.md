@@ -1,10 +1,9 @@
 # Statuspage Exporter
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter?ref=badge_shield)
-![Build Status](https://github.com/sergeyshevch/statuspage-exporter/workflows/CI/badge.svg)
-[![License](https://img.shields.io/github/license/sergeyshevch/statuspage-exporter)](/LICENSE)
-[![Release](https://img.shields.io/github/release/sergeyshevch/statuspage-exporter.svg)](https://github.com/sergeyshevch/statuspage-exporter/releases/latest)
-[![Docker](https://img.shields.io/docker/pulls/sergeykons/statuspage-exporter)](https://hub.docker.com/r/sergeykons/statuspage-exporter)
+![Build Status](https://github.com/fernandonogueira/statuspage-exporter/workflows/CI/badge.svg)
+[![License](https://img.shields.io/github/license/fernandonogueira/statuspage-exporter)](/LICENSE)
+[![Release](https://img.shields.io/github/release/fernandonogueira/statuspage-exporter.svg)](https://github.com/fernandonogueira/statuspage-exporter/releases/latest)
+[![Docker](https://img.shields.io/docker/pulls/fernandonogueira/statuspage-exporter)](https://hub.docker.com/r/fernandonogueira/statuspage-exporter)
 
 Statuspage exporter exports metrics from given statuspages as prometheus metrics.
 
@@ -69,27 +68,27 @@ with DockerHun pull limits.
 
 | Registry        | Repository                                                                                                                         |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------|
-| Github Registry | [ghcr.io/sergeyshevch/statuspage-exporter](https://github.com/sergeyshevch/statuspage-exporter/pkgs/container/statuspage-exporter) |
-| DockerHub       | [sergeykons/statuspage-exporter](https://hub.docker.com/r/sergeykons/statuspage-exporter)                                          |
+| Github Registry | [ghcr.io/fernandonogueira/statuspage-exporter](https://github.com/fernandonogueira/statuspage-exporter/pkgs/container/statuspage-exporter) |
+| DockerHub       | [fernandonogueira/statuspage-exporter](https://hub.docker.com/r/fernandonogueira/statuspage-exporter)                                          |
 
 ```bash
-docker run -p 9747:9747 ghcr.io/sergeyshevch/statuspage-exporter --statuspages=https://www.githubstatus.com, https://https://jira-software.status.atlassian.com
+docker run -p 9747:9747 ghcr.io/fernandonogueira/statuspage-exporter --statuspages=https://www.githubstatus.com, https://https://jira-software.status.atlassian.com
 ```
 
 ### Helm
 
 ```shell
-helm add sergeyshevch sergeyshevch.github.io/charts
-helm install sergeyshevch/statuspage-exporter --namespace statuspage-exporter --create-namespace --set statuspages[0]=https://www.githubstatus.com
+helm add fernandonogueira fernandonogueira.github.io/charts
+helm install fernandonogueira/statuspage-exporter --namespace statuspage-exporter --create-namespace --set statuspages[0]=https://www.githubstatus.com
 ```
 
 ### Binary
 
 Please select latest available release
-from [releases page](https://github.com/sergeyshevch/statuspage-exporter/releases)
+from [releases page](https://github.com/fernandonogueira/statuspage-exporter/releases)
 
 ```
-wget https://github.com/sergeyshevch/statuspage-exporter/releases/download/v1.2.0/statuspage-exporter_v1.2.0_darwin_amd64 -O statuspage-exporter
+wget https://github.com/fernandonogueira/statuspage-exporter/releases/download/v1.2.0/statuspage-exporter_v1.2.0_darwin_amd64 -O statuspage-exporter
 sudo chmod +x statuspage-exporter
 ./statuspage-exporter
 ```
@@ -181,10 +180,4 @@ statuspage_component{component="Webhooks",service="GitHub",status_page_url="http
 # TYPE statuspage_overall gauge
 statuspage_overall{service="GitHub",status_page_url="https://www.githubstatus.com"} 0
 ```
-
-## License Scan
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter?ref=badge_large)
-
-
 
