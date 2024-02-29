@@ -35,38 +35,37 @@ func InitConfig(configFilePath string) (*ExporterConfig, error) {
 		Log:           log,
 	}
 
-	// If a config file is specified, read it in.
 	if configFilePath != "" {
 		viper.SetConfigType("yaml")
 		viper.SetConfigFile(configFilePath)
-		viper.AutomaticEnv()
 	} else {
 		config.Log.Info("No config file specified, using default values.")
-		return config, nil
 	}
+	viper.AutomaticEnv()
 
 	// If a config file found, read it in.
 	readConfigErr := viper.ReadInConfig()
-	if readConfigErr == nil {
+	if readConfigErr != nil {
+		config.Log.Error("Unable to read config", zap.Error(readConfigErr))
+		if configFilePath != "" {
+			return config, readConfigErr
+		}
+	} else {
 		log.Info(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
-
-		clientTimeout := viper.GetDuration("client_timeout")
-		if clientTimeout > 0 {
-			config.ClientTimeout = clientTimeout
-		}
-		httpPort := viper.GetInt("http_port")
-		if httpPort > 0 {
-			config.HTTPPort = httpPort
-		}
-
-		retryCount := viper.GetInt("retry_count")
-		if retryCount > 0 {
-			config.RetryCount = retryCount
-		}
-
-		return config, nil
 	}
 
-	log.Error("Unable to read config", zap.Error(readConfigErr))
-	return config, readConfigErr
+	clientTimeout := viper.GetDuration("client_timeout")
+	if clientTimeout > 0 {
+		config.ClientTimeout = clientTimeout
+	}
+	httpPort := viper.GetInt("http_port")
+	if httpPort > 0 {
+		config.HTTPPort = httpPort
+	}
+
+	retryCount := viper.GetInt("retry_count")
+	if retryCount > 0 {
+		config.RetryCount = retryCount
+	}
+	return config, nil
 }

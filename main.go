@@ -70,6 +70,14 @@ func main() {
 	flag.Parse()
 
 	cfg, err := config.InitConfig(configFile)
+
+	cfg.Log.Info("Loaded config",
+		zap.Int("http_port", cfg.HTTPPort),
+		zap.Duration("client_timeout", cfg.ClientTimeout),
+		zap.Int("retry_count", cfg.RetryCount))
+
+	cfg.Log.Info("Starting statuspage_exporter...")
+
 	if err != nil {
 		cfg.Log.Fatal("Unable to initialize config", zap.Error(err))
 	}
