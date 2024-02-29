@@ -40,6 +40,6 @@ jobs:
         with:
           custom-arguments: --provider-opt github_use_compare_commits=true
           hooks: goreleaser
-          prerelease: true
+          changelog-file: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
