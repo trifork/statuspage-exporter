@@ -4,6 +4,10 @@ on:
     tags:
       - "v*"
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
@@ -30,10 +34,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+      - uses: go-semantic-release/action@v1
         with:
-          version: latest
-          args: release --clean
+          custom-arguments: --provider-opt github_use_compare_commits=true
+          hooks: goreleaser
+          changelog-file: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
