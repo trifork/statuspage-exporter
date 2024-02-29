@@ -1,12 +1,8 @@
-name: "CI"
-
+name: Release
 on:
   push:
-    branches: [ "main" ]
-
-concurrency:
-  group: release
-  cancel-in-progress: false
+    tags:
+      - "v*"
 
 jobs:
   lint:
@@ -34,10 +30,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: go-semantic-release/action@v1
+      - name: GoReleaser
+        uses: goreleaser/goreleaser-action@v5
         with:
-          custom-arguments: --provider-opt github_use_compare_commits=true
-          hooks: goreleaser
-          changelog-file: CHANGELOG.md
+          version: latest
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

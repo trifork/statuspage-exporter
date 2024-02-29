@@ -84,3 +84,12 @@ snapshot:
 source:
   # https://goreleaser.com/customization/source/
   enabled: true
+
+release:
+  prerelease: auto
+
+changelog:
+  use:
+    github
+  sort: asc
+  abbrev: 0
