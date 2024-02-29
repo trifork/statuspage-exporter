@@ -1,8 +1,6 @@
 before:
   hooks:
-    # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
     - go generate ./...
 builds:
   - env:
@@ -31,7 +29,7 @@ dockers:
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.description='Statuspage Exporter'"
+      - "--label=org.opencontainers.image.description=Statuspage Exporter"
   - use: buildx
     goos: linux
     goarch: arm64
@@ -44,7 +42,7 @@ dockers:
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.description='Statuspage Exporter'"
+      - "--label=org.opencontainers.image.description=Statuspage Exporter"
   - use: buildx
     goos: linux
     goarch: arm
@@ -58,7 +56,7 @@ dockers:
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.description='Statuspage Exporter'"
+      - "--label=org.opencontainers.image.description=Statuspage Exporter"
 
 docker_manifests:
   # https://goreleaser.com/customization/docker_manifest/
