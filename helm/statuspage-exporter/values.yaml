@@ -40,7 +40,7 @@ securityContext:
   runAsUser: 1000
 
 serviceMonitor:
-  enabled: true
+  enabled: false
   interval: 15s
 
 resources: { }
