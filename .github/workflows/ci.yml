@@ -13,6 +13,8 @@ jobs:
     uses: ./.github/workflows/lint.yml
 
   release:
+    permissions:
+      contents: write
     if: github.repository == 'fernandonogueira/statuspage-exporter'
     name: Release
     environment: release
