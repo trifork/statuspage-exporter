@@ -89,7 +89,6 @@ release:
   prerelease: auto
 
 changelog:
-  use: github
   groups: # Regex use RE2 syntax as defined here: https://github.com/google/re2/wiki/Syntax.
     - title: 'Features'
       regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
