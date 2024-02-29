@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	defaultClientTimeout = 2 * time.Second
+	defaultClientTimeout = 5 * time.Second
 	defaultHTTPPort      = 9747
 	defaultRetryCount    = 3
 )
