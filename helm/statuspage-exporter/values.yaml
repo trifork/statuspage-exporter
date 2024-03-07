@@ -2,7 +2,7 @@ replicaCount: 1
 
 httpPort: 9747
 retryCount: 3
-clientTimeout: 2
+clientTimeout: 10s
 
 image:
   repository: ghcr.io/fernandonogueira/statuspage-exporter
