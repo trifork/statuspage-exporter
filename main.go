@@ -14,7 +14,7 @@ import (
 	echoPrometheus "github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/common/version"
+	"github.com/prometheus/client_golang/prometheus/collectors/version"
 	"go.uber.org/zap"
 
 	"github.com/fernandonogueira/statuspage-exporter/pkg/config"
