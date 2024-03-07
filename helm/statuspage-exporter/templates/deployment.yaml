@@ -38,11 +38,11 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: metrics
           readinessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: metrics
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           envFrom:
