@@ -114,22 +114,13 @@ changelog:
   # Default is no groups.
   groups:
     - title: Features
-      regexp: "^.*feat[(\\w)]*:+.*$"
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
       order: 0
-    - title: 'Bug fixes'
-      regexp: "^.*fix[(\\w)]*:+.*$"
+    - title: "Bug fixes"
+      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
       order: 1
-    - title: 'Enhancements'
-      regexp: "^.*chore[(\\w)]*:+.*$"
+    - title: Chore
+      regexp: '^.*?chore(\([[:word:]]+\))??!?:.+$'
       order: 2
     - title: Others
       order: 999
-
-  filters:
-    # Commit messages matching the regexp listed here will be removed from
-    # the changelog
-    # Default is empty
-    exclude:
-      - '^docs'
-      - 'CICD'
-      - typo

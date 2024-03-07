@@ -103,11 +103,14 @@ func FetchStatusPage(
 			title,
 			targetURL,
 			strings.Trim(componentName, " "),
+			utils.StatusToString(StatusToMetricValue(componentStatusText)),
 		).Set(float64(StatusToMetricValue(componentStatusText)))
 	})
 
 	overallText := doc.Find("#statusbar_text").First().Text()
-	overallStatus.WithLabelValues(title, targetURL).
+	overallStatus.WithLabelValues(
+		title, targetURL,
+		utils.StatusToString(PageDescriptionToMetricValue(overallText))).
 		Set(float64(PageDescriptionToMetricValue(overallText)))
 
 	log.Info(

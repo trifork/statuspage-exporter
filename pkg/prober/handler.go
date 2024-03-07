@@ -20,16 +20,16 @@ func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.Ga
 				"0 - Unknown, 1 - Operational, 2 - Planned Maintenance, " +
 				"3 - Degraded Performance, 4 - Partial Outage, 5 - Major Outage, 6 - Security Issue",
 		},
-		[]string{"service", "status_page_url", "component"},
+		[]string{"service", "status_page_url", "component", "status"},
 	)
 	overallStatus := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "statuspage_overall",
-			Help: "Overall status of a service" +
+			Help: "Overall status of a service. " +
 				"0 - Unknown, 1 - Operational, 2 - Planned Maintenance, " +
 				"3 - Degraded Performance, 4 - Partial Outage, 5 - Major Outage, 6 - Security Issue",
 		},
-		[]string{"service", "status_page_url"},
+		[]string{"service", "status_page_url", "status"},
 	)
 	serviceStatusDurationGauge := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{

@@ -31,7 +31,7 @@ If this statuspage is not supported by any of the engines, then statuspage expor
 ### Status.io based
 
 - [Gitlab.com](https://status.gitlab.com/)
-- [Docker](https://status.docker.com/)
+- [Docker](https://www.dockerstatus.com/)
 - [Twitter](https://status.twitterstat.us/)
 
 ## Status mapping
@@ -110,7 +110,7 @@ You can read defaults from [config.go](/pkg/config/config.go)
 ```yaml
 http_port: 9747
 # Timeout for the http client
-client_timeout: 2
+client_timeout: 2s
 # Count of retries for the http client
 retry_count: 3
 ```
