@@ -68,6 +68,6 @@ Create the vmProberSpec.url for the VMProbe
 {{- if .Values.vmProbe.url }}
 {{- .Values.vmProbe.url }}
 {{- else }}
-{{- printf "%s%s%s%s%s" "http://" (include "statuspage-exporter.fullname" .) "." .Release.Namespace ".svc.cluster.local:8080/probe" }}
+{{- printf "%s%s%s%s%s%d%s" "http://" (include "statuspage-exporter.fullname" .) "." .Release.Namespace ".svc.cluster.local:" (.Values.httpPort | int) "/probe" }}
 {{- end }}
 {{- end }}
