@@ -18,7 +18,7 @@ jobs:
     - name: Chart | Build | Push
       working-directory: "helm/statuspage-exporter"
       run: |
-        echo $GITHUB_TOKEN | helm registry login ghcr.io/fernandonogueira --username fernandonogueira --password-stdin
+        echo $GHCR_PAT | docker login ghcr.io ghcr.io/fernandonogueira --username fernandonogueira --password-stdin
         helm package .
         helm push statuspage-exporter-chart-${{ github.event.inputs.tag }}.tgz oci://ghcr.io/fernandonogueira/statuspage-exporter
         
