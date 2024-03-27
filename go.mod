@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/PuerkitoBio/goquery v1.9.1
 	github.com/go-resty/resty/v2 v2.12.0
-	github.com/labstack/echo-contrib v0.15.0
+	github.com/labstack/echo-contrib v0.16.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/prometheus/client_golang v1.19.0
 	github.com/spf13/viper v1.18.2
@@ -27,7 +27,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/prometheus/client_model v0.6.0 // indirect
 	github.com/prometheus/common v0.50.0 // indirect
-	github.com/prometheus/procfs v0.12.0 // indirect
+	github.com/prometheus/procfs v0.13.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
