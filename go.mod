@@ -7,7 +7,7 @@ require (
 	github.com/go-resty/resty/v2 v2.12.0
 	github.com/labstack/echo-contrib v0.17.1
 	github.com/labstack/echo/v4 v4.12.0
-	github.com/prometheus/client_golang v1.19.0
+	github.com/prometheus/client_golang v1.19.1
 	github.com/spf13/viper v1.18.2
 	go.uber.org/zap v1.27.0
 )
