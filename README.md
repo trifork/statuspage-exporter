@@ -1,5 +1,23 @@
 # Statuspage Exporter
 
+To build run
+
+```
+GOOS=linux GOARCH=amd64 go build
+```
+
+To build docker image run
+
+```
+docker build -t jstjerne/statuspage-exporter-auth .
+```
+
+To publish docker image run
+
+```
+docker push jstjerne/statuspage-exporter-auth
+```
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter?ref=badge_shield)
 ![Build Status](https://github.com/sergeyshevch/statuspage-exporter/workflows/CI/badge.svg)
 [![License](https://img.shields.io/github/license/sergeyshevch/statuspage-exporter)](/LICENSE)
@@ -13,11 +31,11 @@ here: [Prometheus Docs](https://prometheus.io/docs/guides/multi-target-exporter/
 
 ## Supported statuspage engines:
 
-- Statuspage.io (Widely used statuspage engine. For example by [GitHub](https://www.githubstatus.com)). You can check
-  that statuspage is supported by this engine by checking that it has
-  a [/api/v2/components.json](https://www.githubstatus.com/api/v2/components.json) endpoint.
-- Status.io (Widely used statuspage engine. For example by [Gitlab.com](https://status.gitlab.com). You can check that
-  statuspage is supported by this engine by checking footer of the page. It should contain status.io text)
+-   Statuspage.io (Widely used statuspage engine. For example by [GitHub](https://www.githubstatus.com)). You can check
+    that statuspage is supported by this engine by checking that it has
+    a [/api/v2/components.json](https://www.githubstatus.com/api/v2/components.json) endpoint.
+-   Status.io (Widely used statuspage engine. For example by [Gitlab.com](https://status.gitlab.com). You can check that
+    statuspage is supported by this engine by checking footer of the page. It should contain status.io text)
 
 Statuspage exporter will automatically detect, which engine used by statuspage and will use appropriate parser.
 If this statuspage is not supported by any of the engines, then statuspage exporter will return an error.
@@ -26,14 +44,14 @@ If this statuspage is not supported by any of the engines, then statuspage expor
 
 ### Statuspage.io based
 
-- [GitHub](https://www.githubstatus.com)
-- [Atlassian (Jira/Confluence/etc)](https://status.atlassian.com/)
+-   [GitHub](https://www.githubstatus.com)
+-   [Atlassian (Jira/Confluence/etc)](https://status.atlassian.com/)
 
 ### Status.io based
 
-- [Gitlab.com](https://status.gitlab.com/)
-- [Docker](https://status.docker.com/)
-- [Twitter](https://status.twitterstat.us/)
+-   [Gitlab.com](https://status.gitlab.com/)
+-   [Docker](https://status.docker.com/)
+-   [Twitter](https://status.twitterstat.us/)
 
 ## Status mapping
 
@@ -41,11 +59,12 @@ Different statuspage engines have different statuses. Statuspage exporter will m
 statuspages.
 
 Special cases:
-- Overall status for Status.io engine can be wrong because of statuspage text lacks information about some statuses
-- Status.io statuses is parsed correctly only if it wasn't customized in status.io dashboard. Status.io doesn't provide public API so exporter relies on page text.
+
+-   Overall status for Status.io engine can be wrong because of statuspage text lacks information about some statuses
+-   Status.io statuses is parsed correctly only if it wasn't customized in status.io dashboard. Status.io doesn't provide public API so exporter relies on page text.
 
 | Statuspage.io        | Status.io                  | Statuspage Exporter | Description                           |
-|----------------------|----------------------------|---------------------|---------------------------------------|
+| -------------------- | -------------------------- | ------------------- | ------------------------------------- |
 | -                    | -                          | 0                   | Status unknown                        |
 | operational          | Operational                | 1                   | System / Component operation normally |
 | -                    | Planned Maintenance        | 2                   | Planned maintenance                   |
@@ -68,7 +87,7 @@ Docker images available in Github Registry/DockerHub in all arch (amd64, arm64, 
 with DockerHun pull limits.
 
 | Registry        | Repository                                                                                                                         |
-|-----------------|------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Github Registry | [ghcr.io/sergeyshevch/statuspage-exporter](https://github.com/sergeyshevch/statuspage-exporter/pkgs/container/statuspage-exporter) |
 | DockerHub       | [sergeykons/statuspage-exporter](https://hub.docker.com/r/sergeykons/statuspage-exporter)                                          |
 
@@ -127,20 +146,21 @@ The statuspage exporter needs to be passed the target as a parameter, this can b
 done with relabelling.
 
 Example config:
+
 ```yml
 scrape_configs:
-  - job_name: 'statuspage'
-    metrics_path: /probe
-    static_configs:
-      - targets:
-        - https://www.githubstatus.com    # Target to probe with http.
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 127.0.0.1:9747  # The statuspage exporter's real hostname:port.
+    - job_name: "statuspage"
+      metrics_path: /probe
+      static_configs:
+          - targets:
+                - https://www.githubstatus.com # Target to probe with http.
+      relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: 127.0.0.1:9747 # The statuspage exporter's real hostname:port.
 ```
 
 You also can use Prometheus operator kind:Probe or VictoriaMetrics operator kind:VMProbe Custom resources for same purpose.
@@ -149,13 +169,13 @@ You also can use Prometheus operator kind:Probe or VictoriaMetrics operator kind
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: statuspage-probe
+    name: statuspage-probe
 spec:
-  module: http_2xx
-  targets:
-    staticConfig:
-      static:
-        - 'www.githubstatus.com'
+    module: http_2xx
+    targets:
+        staticConfig:
+            static:
+                - "www.githubstatus.com"
 ```
 
 ## Metrics Example
@@ -185,6 +205,3 @@ statuspage_overall{service="GitHub",status_page_url="https://www.githubstatus.co
 ## License Scan
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter?ref=badge_large)
-
-
-

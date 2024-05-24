@@ -7,9 +7,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"go.uber.org/zap"
-
 	"github.com/sergeyshevch/statuspage-exporter/pkg/engines"
+	"github.com/sergeyshevch/statuspage-exporter/pkg/utils"
+	"go.uber.org/zap"
 )
 
 func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.GaugeVec) {
@@ -45,6 +45,11 @@ func createMetrics() (*prometheus.GaugeVec, *prometheus.GaugeVec, *prometheus.Ga
 // Handler returns a http handler for /probe endpoint.
 func Handler(log *zap.Logger) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+
+		if (!utils.Auth(ctx)) { // Call the Auth function from the imported package
+			return ctx.String(http.StatusUnauthorized, "Unauthorized")
+		}
+
 		targetURL := ctx.QueryParam("target")
 		if targetURL == "" {
 			return ctx.String(http.StatusBadRequest, "target is required")
