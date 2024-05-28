@@ -7,7 +7,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/utils"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/utils"
 )
 
 // IsStatusPageIOPage checks if given URL is StatusPage.io page.
@@ -46,6 +46,23 @@ func constructURL(log *zap.Logger, targetURL string) (string, error) {
 	return parsedURL.String(), nil
 }
 
+func constructOverallStatusURL(log *zap.Logger, targetURL string) (string, error) {
+	parsedURL, err := url.Parse(targetURL)
+	if err != nil {
+		panic(err)
+	}
+
+	parsedURL.Path = "/api/v2/status.json"
+
+	if parsedURL.Host == "" {
+		log.Error(utils.ErrInvalidURL.Error(), zap.String("url", targetURL))
+
+		return "", utils.ErrInvalidURL
+	}
+
+	return parsedURL.String(), nil
+}
+
 // FetchStatusPage fetches status page and updates service status gauge.
 func FetchStatusPage(
 	log *zap.Logger,
@@ -62,7 +79,7 @@ func FetchStatusPage(
 	}
 
 	resp, err := client.R().
-		SetResult(&AtlassianStatusPageResponse{}). //nolint:exhaustruct
+		SetResult(&AtlassianStatusPageResponse{}).
 		Get(parsedURL)
 	if err != nil {
 		log.Error(
@@ -83,7 +100,6 @@ func FetchStatusPage(
 			zap.Duration("duration", resp.Time()),
 			zap.Error(err),
 		)
-
 		return err
 	}
 
@@ -92,12 +108,41 @@ func FetchStatusPage(
 			result.Page.Name,
 			targetURL,
 			component.Name,
-		).Set(float64(IndicatorToMetricValue(component.Status)))
+			utils.StatusToString(StatusToMetricValue(component.Status)),
+		).Set(float64(StatusToMetricValue(component.Status)))
+	}
+
+	parsedURL, err = constructOverallStatusURL(log, targetURL)
+	if err != nil {
+		return err
+	}
+
+	resp, err = client.R().SetResult(&AtlassianStatusPageResponse{}).Get(parsedURL)
+	if err != nil {
+		log.Error(
+			"Error fetching overall status page",
+			zap.String("url", targetURL),
+			zap.Duration("duration", resp.Time()),
+			zap.Error(err),
+		)
+		return err
+	}
+
+	result, ok = resp.Result().(*AtlassianStatusPageResponse)
+	if !ok {
+		log.Error(
+			"Error parsing overall status page response",
+			zap.String("url", targetURL),
+			zap.Duration("duration", resp.Time()),
+			zap.Error(err),
+		)
+		return err
 	}
 
 	overallStatus.WithLabelValues(
 		result.Page.Name,
 		targetURL,
+		utils.StatusToString(IndicatorToMetricValue(result.Status.Indicator)),
 	).Set(float64(IndicatorToMetricValue(result.Status.Indicator)))
 
 	log.Info(

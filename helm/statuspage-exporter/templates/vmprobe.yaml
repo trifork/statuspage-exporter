@@ -1,0 +1,18 @@
+{{- if and (.Values.vmProbe.enabled) (.Values.vmProbe.targets)  }}
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMProbe
+metadata:
+  name: {{ include "statuspage-exporter.fullname" . }}
+  labels:
+    {{- include "statuspage-exporter.labels" . | nindent 4 }}
+spec:
+  module: http_2xx
+  vmProberSpec:
+    url: {{ include "statuspage-exporter.vmProberSpecUrl" . }}
+  targets:
+    staticConfig:
+      targets:
+{{- range .Values.vmProbe.targets }}
+        - {{ . }}
+{{- end }}
+{{- end }}

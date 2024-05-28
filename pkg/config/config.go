@@ -1,74 +1,71 @@
 package config
 
 import (
-  "fmt"
-  "os"
-  "sync"
-  "time"
+	"fmt"
+	"time"
 
-  "github.com/spf13/viper"
-  "go.uber.org/zap"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 const (
-  defaultClientTimeout = 2 * time.Second
-  defaultHTTPPort      = 9747
-  defaultRetryCount    = 3
+	defaultClientTimeout = 5 * time.Second
+	defaultHTTPPort      = 9747
+	defaultRetryCount    = 3
 )
 
-var configMutex = &sync.Mutex{}
+type ExporterConfig struct {
+	HTTPPort      int
+	ClientTimeout time.Duration
+	RetryCount    int
+	Log           *zap.Logger
+}
 
 // InitConfig initializes a config and configure viper to receive config from file and environment.
-func InitConfig() (*zap.Logger, error) {
-  log, err := zap.NewProduction()
-  if err != nil {
-    log.Fatal("Unable to create logger", zap.Error(err))
-  }
+func InitConfig(configFilePath string) (*ExporterConfig, error) {
+	log, err := zap.NewProduction()
+	if err != nil {
+		log.Fatal("Unable to create logger", zap.Error(err))
+	}
 
-  // Find home directory.
-  home, err := os.UserHomeDir()
-  if err != nil {
-    return log, err
-  }
+	config := &ExporterConfig{
+		HTTPPort:      defaultHTTPPort,
+		ClientTimeout: defaultClientTimeout,
+		RetryCount:    defaultRetryCount,
+		Log:           log,
+	}
 
-  viper.AddConfigPath(home)
-  viper.AddConfigPath(".")
-  viper.SetConfigType("yaml")
-  viper.SetConfigName(".statuspage-exporter")
+	if configFilePath != "" {
+		viper.SetConfigType("yaml")
+		viper.SetConfigFile(configFilePath)
+	} else {
+		config.Log.Info("No config file specified, using default values.")
+	}
+	viper.AutomaticEnv()
 
-  viper.AutomaticEnv() // read in environment variables that match
+	// If a config file found, read it in.
+	readConfigErr := viper.ReadInConfig()
+	if readConfigErr != nil {
+		config.Log.Error("Unable to read config", zap.Error(readConfigErr))
+		if configFilePath != "" {
+			return config, readConfigErr
+		}
+	} else {
+		log.Info(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
+	}
 
-  // If a config file found, read it in.
-  if err := viper.ReadInConfig(); err == nil {
-    log.Info(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
-  }
+	clientTimeout := viper.GetDuration("client_timeout")
+	if clientTimeout > 0 {
+		config.ClientTimeout = clientTimeout
+	}
+	httpPort := viper.GetInt("http_port")
+	if httpPort > 0 {
+		config.HTTPPort = httpPort
+	}
 
-  return log, nil
-}
-
-// HTTPPort returns a port for http server.
-func HTTPPort() int {
-  viper.SetDefault("http_port", defaultHTTPPort)
-
-  return viper.GetInt("http_port")
-}
-
-// ClientTimeout returns a timeout for http client.
-func ClientTimeout() time.Duration {
-  configMutex.Lock()
-  viper.SetDefault("client_timeout", defaultClientTimeout)
-  value := viper.GetDuration("client_timeout")
-  configMutex.Unlock()
-
-  return value
-}
-
-// RetryCount returns amount of retries for http client.
-func RetryCount() int {
-  configMutex.Lock()
-  viper.SetDefault("retry_count", defaultRetryCount)
-  value := viper.GetInt("retry_count")
-  configMutex.Unlock()
-
-  return value
+	retryCount := viper.GetInt("retry_count")
+	if retryCount > 0 {
+		config.RetryCount = retryCount
+	}
+	return config, nil
 }

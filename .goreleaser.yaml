@@ -1,10 +1,6 @@
-# This is an example .goreleaser.yml file with some sensible defaults.
-# Make sure to check the documentation at https://goreleaser.com
 before:
   hooks:
-    # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
     - go generate ./...
 builds:
   - env:
@@ -25,68 +21,55 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-amd64"
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-amd64"
-      - "sergeykons/{{ .ProjectName }}:{{ .Version }}-amd64"
-      - "sergeykons/{{ .ProjectName }}:latest-amd64"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-amd64"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-amd64"
     build_flag_templates:
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.description=Statuspage Exporter"
   - use: buildx
     goos: linux
     goarch: arm64
     image_templates:
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-arm64v8"
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-arm64v8"
-      - "sergeykons/{{ .ProjectName }}:{{ .Version }}-arm64v8"
-      - "sergeykons/{{ .ProjectName }}:latest-arm64v8"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-arm64v8"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-arm64v8"
     build_flag_templates:
       - "--platform=linux/arm64/v8"
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.description=Statuspage Exporter"
   - use: buildx
     goos: linux
     goarch: arm
     goarm: 7
     image_templates:
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-armv7"
-      - "ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-armv7"
-      - "sergeykons/{{ .ProjectName }}:{{ .Version }}-armv7"
-      - "sergeykons/{{ .ProjectName }}:latest-armv7"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-armv7"
+      - "ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-armv7"
     build_flag_templates:
       - "--platform=linux/arm/v7"
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.description=Statuspage Exporter"
 
 docker_manifests:
   # https://goreleaser.com/customization/docker_manifest/
-  - name_template: ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}
+  - name_template: ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}
     image_templates:
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-arm64v8
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:{{ .Version }}-armv7
-  - name_template: ghcr.io/sergeyshevch/{{ .ProjectName }}:latest
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-amd64
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-arm64v8
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:{{ .Version }}-armv7
+  - name_template: ghcr.io/fernandonogueira/{{ .ProjectName }}:latest
     image_templates:
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-amd64
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-arm64v8
-      - ghcr.io/sergeyshevch/{{ .ProjectName }}:latest-armv7
-  - name_template: sergeykons/{{ .ProjectName }}:{{ .Version }}
-    image_templates:
-      - sergeykons/{{ .ProjectName }}:{{ .Version }}-amd64
-      - sergeykons/{{ .ProjectName }}:{{ .Version }}-arm64v8
-      - sergeykons/{{ .ProjectName }}:{{ .Version }}-armv7
-  - name_template: sergeykons/{{ .ProjectName }}:latest
-    image_templates:
-      - sergeykons/{{ .ProjectName }}:latest-amd64
-      - sergeykons/{{ .ProjectName }}:latest-arm64v8
-      - sergeykons/{{ .ProjectName }}:latest-armv7
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-amd64
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-arm64v8
+      - ghcr.io/fernandonogueira/{{ .ProjectName }}:latest-armv7
 
 archives:
   # https://goreleaser.com/customization/archive/
@@ -101,3 +84,43 @@ snapshot:
 source:
   # https://goreleaser.com/customization/source/
   enabled: true
+
+changelog:
+  # Set it to true if you wish to skip the changelog generation.
+  # This may result in an empty release notes on GitHub/GitLab/Gitea.
+  disable: false
+
+  # Changelog generation implementation to use.
+  #
+  # Valid options are:
+  # - `git`: uses `git log`;
+  # - `github`: uses the compare GitHub API, appending the author login to the changelog.
+  # - `gitlab`: uses the compare GitLab API, appending the author name and email to the changelog.
+  # - `github-native`: uses the GitHub release notes generation API, disables the groups feature.
+  #
+  # Defaults to `git`.
+  use: git
+
+  # Sorts the changelog by the commit's messages.
+  # Could either be asc, desc or empty
+  # Default is empty
+  sort: asc
+
+  # Group commits messages by given regex and title.
+  # Order value defines the order of the groups.
+  # Proving no regex means all commits will be grouped under the default group.
+  # Groups are disabled when using github-native, as it already groups things by itself.
+  #
+  # Default is no groups.
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug fixes"
+      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Chore
+      regexp: '^.*?chore(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: Others
+      order: 999

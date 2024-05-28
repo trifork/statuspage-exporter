@@ -11,7 +11,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 
-	"github.com/sergeyshevch/statuspage-exporter/pkg/utils"
+	"github.com/fernandonogueira/statuspage-exporter/pkg/utils"
 )
 
 // IsStatusIOPage checks if given URL is Status.io page.
@@ -51,7 +51,7 @@ func constructURL(log *zap.Logger, targetURL string) (string, error) {
 }
 
 // FetchStatusPage fetches status page and updates service status gauge.
-func FetchStatusPage( //nolint:funlen
+func FetchStatusPage(
 	log *zap.Logger,
 	targetURL string,
 	client *resty.Client,
@@ -78,8 +78,8 @@ func FetchStatusPage( //nolint:funlen
 	}
 
 	defer func(body io.ReadCloser) {
-		err := body.Close()
-		if err != nil {
+		closeErr := body.Close()
+		if closeErr != nil {
 			log.Error("Error closing response body", zap.Error(err))
 
 			return
@@ -103,11 +103,14 @@ func FetchStatusPage( //nolint:funlen
 			title,
 			targetURL,
 			strings.Trim(componentName, " "),
+			utils.StatusToString(StatusToMetricValue(componentStatusText)),
 		).Set(float64(StatusToMetricValue(componentStatusText)))
 	})
 
 	overallText := doc.Find("#statusbar_text").First().Text()
-	overallStatus.WithLabelValues(title, targetURL).
+	overallStatus.WithLabelValues(
+		title, targetURL,
+		utils.StatusToString(PageDescriptionToMetricValue(overallText))).
 		Set(float64(PageDescriptionToMetricValue(overallText)))
 
 	log.Info(

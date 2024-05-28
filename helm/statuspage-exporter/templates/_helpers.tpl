@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the vmProberSpec.url for the VMProbe
+*/}}
+{{- define "statuspage-exporter.vmProberSpecUrl" -}}
+{{- if .Values.vmProbe.url }}
+{{- .Values.vmProbe.url }}
+{{- else }}
+{{- printf "%s%s%s%s%s%d%s" "http://" (include "statuspage-exporter.fullname" .) "." .Release.Namespace ".svc.cluster.local:" (.Values.httpPort | int) "/probe" }}
+{{- end }}
+{{- end }}

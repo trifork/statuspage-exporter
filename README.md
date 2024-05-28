@@ -18,12 +18,6 @@ To publish docker image run
 docker push jstjerne/statuspage-exporter-auth
 ```
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsergeyshevch%2Fstatuspage-exporter?ref=badge_shield)
-![Build Status](https://github.com/sergeyshevch/statuspage-exporter/workflows/CI/badge.svg)
-[![License](https://img.shields.io/github/license/sergeyshevch/statuspage-exporter)](/LICENSE)
-[![Release](https://img.shields.io/github/release/sergeyshevch/statuspage-exporter.svg)](https://github.com/sergeyshevch/statuspage-exporter/releases/latest)
-[![Docker](https://img.shields.io/docker/pulls/sergeykons/statuspage-exporter)](https://hub.docker.com/r/sergeykons/statuspage-exporter)
-
 Statuspage exporter exports metrics from given statuspages as prometheus metrics.
 
 Statuspage exporter is a multi-target exporter. It scrape statuspages using probes. You can read more about it
@@ -92,23 +86,23 @@ with DockerHun pull limits.
 | DockerHub       | [sergeykons/statuspage-exporter](https://hub.docker.com/r/sergeykons/statuspage-exporter)                                          |
 
 ```bash
-docker run -p 9747:9747 ghcr.io/sergeyshevch/statuspage-exporter --statuspages=https://www.githubstatus.com, https://https://jira-software.status.atlassian.com
+docker run -p 9747:9747 ghcr.io/fernandonogueira/statuspage-exporter --statuspages=https://www.githubstatus.com, https://https://jira-software.status.atlassian.com
 ```
 
 ### Helm
 
 ```shell
-helm add sergeyshevch sergeyshevch.github.io/charts
-helm install sergeyshevch/statuspage-exporter --namespace statuspage-exporter --create-namespace --set statuspages[0]=https://www.githubstatus.com
+helm add fernandonogueira fernandonogueira.github.io/charts
+helm install fernandonogueira/statuspage-exporter --namespace statuspage-exporter --create-namespace --set statuspages[0]=https://www.githubstatus.com
 ```
 
 ### Binary
 
 Please select latest available release
-from [releases page](https://github.com/sergeyshevch/statuspage-exporter/releases)
+from [releases page](https://github.com/fernandonogueira/statuspage-exporter/releases)
 
 ```
-wget https://github.com/sergeyshevch/statuspage-exporter/releases/download/v1.2.0/statuspage-exporter_v1.2.0_darwin_amd64 -O statuspage-exporter
+wget https://github.com/fernandonogueira/statuspage-exporter/releases/download/v1.2.0/statuspage-exporter_v1.2.0_darwin_amd64 -O statuspage-exporter
 sudo chmod +x statuspage-exporter
 ./statuspage-exporter
 ```
@@ -130,7 +124,7 @@ You can read defaults from [config.go](/pkg/config/config.go)
 ```yaml
 http_port: 9747
 # Timeout for the http client
-client_timeout: 2
+client_timeout: 2s
 # Count of retries for the http client
 retry_count: 3
 ```

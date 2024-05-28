@@ -1,0 +1,24 @@
+name: Release Helm
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag'
+        required: true
+
+permissions:
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Chart | Build | Push
+      working-directory: "helm/statuspage-exporter"
+      run: |
+        echo $GHCR_PAT | docker login ghcr.io -u fernandonogueira --password-stdin
+        helm package .
+        helm push statuspage-exporter-chart-${{ github.event.inputs.tag }}.tgz oci://ghcr.io/fernandonogueira/statuspage-exporter
+        
