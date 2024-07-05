@@ -1,21 +1,26 @@
 # Statuspage Exporter
 
-To build run
+Login to registry
+```
+az login
+az acr login --name crlynx
+```
 
+To build run:
 ```
 GOOS=linux GOARCH=amd64 go build
 ```
 
-To build docker image run
+Then build docker image by running:
 
 ```
-docker build -t jstjerne/statuspage-exporter-auth .
+docker build -t crlynx.azurecr.io/crlynx/stauspage-exporter .
 ```
 
-To publish docker image run
+To publish docker image run:
 
 ```
-docker push jstjerne/statuspage-exporter-auth
+docker push crlynx.azurecr.io/crlynx/stauspage-exporter
 ```
 
 Statuspage exporter exports metrics from given statuspages as prometheus metrics.
